@@ -4,10 +4,10 @@
 -- Set keymaps to control the debugger
 
 local vk = vim.keymap.set
-vk("v", "J", ":m '>+1<cr>gv=gv", { desc = "Move selcted down" })
-vk("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move selcted up" })
+vk("v", "J", ":m '>+1<cr>gv=gv", { desc = "Move selected down" })
+vk("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move selected up" })
 vk("n", "<C-p>", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
-vk("n", "<C-o>", "<cmd>Telescope lsp_workspace_symbols<cr>", { desc = "Find symbols" })
+vk("n", "<C-o>", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", { desc = "Find symbols" })
 vk("i", "jj", "<esc>")
 vk("n", "<C-a>", "za", { desc = "Toggle fold" })
 vk("n", "<A-p>", "<cmd>pu<cr>", { desc = "Paste below" })

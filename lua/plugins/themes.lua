@@ -1,42 +1,27 @@
-return {
-  {
-    "lrangell/theme-cycler.nvim",
-    init = function()
-      local tc = require("themeCycler")
-      vim.keymap.set("n", "<space>uy", tc.open_lazy, { desc = "ThemeCycler" })
-    end,
-  },
-  { "ellisonleao/gruvbox.nvim" },
-  { "catppuccin/nvim", lazy = false },
-  { "folke/tokyonight.nvim", lazy = false },
-  {
-    "maxmx03/solarized.nvim",
-    transparent = true, -- enable transparent background
-    -- palette = 'solarized',
-    name = "solarized",
-    enables = {
-      editor = true,
-      syntax = true,
+-- local groups = { "Normal", "NormalFloat", "LineNr", "NvimTreeNormal", "CursorLineNr" }
+-- for i, g in ipairs(groups) do
+--   vim.api.nvim_set_hl(0, g, { bg = "none" })
+-- end
 
-      -- PLUGINS
-      bufferline = true,
-      cmp = true, -- disabled
-      diagnostic = true,
-      indentblankline = true,
-      lsp = true,
-      lspsaga = false, -- disabled
-      navic = false,
-      semantic = true,
-      telescope = true,
-      tree = true, -- disabled
-      treesitter = true,
-    },
-  },
+return {
+  -- {
+  --   "lrangell/theme-cycler.nvim",
+  --   init = function()
+  --     local tc = require("themeCycler")
+  --     vim.keymap.set("n", "<space>uy", tc.open_lazy, { desc = "ThemeCycler" })
+  --   end,
+  -- },
+  { "ellisonleao/gruvbox.nvim" },
+  { "catppuccin/nvim",         lazy = false },
+  { "folke/tokyonight.nvim",   lazy = false },
+  -- { "maxmx03/solarized.nvim",  opts = { theme = "neo" } },
+  { "maxmx03/solarized.nvim" },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "solarized",
-      -- colorscheme = "tokyonight-night",
+      -- colorscheme = "solarized",
+      colorscheme = "tokyonight",
+      -- colorscheme = "gruvbox",
     },
   },
 }
