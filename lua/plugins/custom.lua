@@ -1,14 +1,19 @@
 return {
   { "nvim-neo-tree/neo-tree.nvim", enabled = false },
-  { "folke/flash.nvim",            enabled = false },
-  { "rcarriga/nvim-notify",        opts = { stages = "static" } },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      highlight = { enable = false }
-    }
-  },
+  { "folke/flash.nvim", enabled = false },
+  { "folke/noice.nvim", enabled = false },
+  { "rcarriga/nvim-notify", enabled = false },
+  { "rcarriga/nvim-notify", opts = { stages = "static" } },
   { "tpope/vim-fugitive" },
+  {
+    "ahmedkhalf/project.nvim",
+    config = function() end,
+    opts = {
+      show_hidden = true,
+      silent_chdir = false,
+      patterns = { ".git", "package.json", "index.html", "popup.js", "init.lua" },
+    },
+  },
   { "mbbill/undotree" },
   {
     "mg979/vim-visual-multi",
@@ -34,20 +39,30 @@ return {
     opts = {
       draw = {
         delay = 50,
-        animation = require("mini.indentscope").gen_animation.none()
+        animation = require("mini.indentscope").gen_animation.none(),
         -- .gen_animation.exponential({ duration = 250, unit = "total" }),
       },
     },
   },
   {
     "nvim-telescope/telescope.nvim",
+    config = function()
+      require("telescope").load_extension("projects")
+    end,
     keys = {
       -- add a keymap to browse plugin files
       -- stylua: ignore
       {
-        "<leader>fp",
+        "<leader>fu",
         function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,
         desc = "Find Plugin File",
+      },
+      {
+        "<leader>fp",
+        function()
+          require("telescope").extensions.projects.projects()
+        end,
+        desc = "Find projects",
       },
     },
     -- change some options
@@ -58,6 +73,39 @@ return {
         layout_config = { prompt_position = "top" },
         sorting_strategy = "ascending",
         winblend = 0,
+      },
+    },
+  },
+  -- the opts function can also be used to change the default opts:
+  {
+    "nvim-lualine/lualine.nvim",
+    opts = {
+      options = {
+        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
+      },
+    },
+  },
+  -- add more treesitter parsers
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      highlight = { enable = false },
+      ensure_installed = {
+        "bash",
+        "html",
+        "javascript",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "query",
+        "regex",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
       },
     },
   },
@@ -240,36 +288,4 @@ return {
   --     }
   --   end,
   -- },
-  -- the opts function can also be used to change the default opts:
-  {
-    "nvim-lualine/lualine.nvim",
-    opts = {
-      options = {
-        section_separators = { left = "", right = "" },
-        component_separators = { left = "", right = "" },
-      },
-    },
-  },
-  -- add more treesitter parsers
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "bash",
-        "html",
-        "javascript",
-        "json",
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "query",
-        "regex",
-        "tsx",
-        "typescript",
-        "vim",
-        "yaml",
-      },
-    },
-  },
 }
