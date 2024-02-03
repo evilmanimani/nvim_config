@@ -15,7 +15,7 @@ require("lazy").setup({
       "MaximilianLloyd/ascii.nvim",
       event = "VimEnter",
       dependencies = {
-        "MunifTanjim/nui.nvim"
+        "MunifTanjim/nui.nvim",
       },
       config = function()
         require("telescope").load_extension("ascii")
