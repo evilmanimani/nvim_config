@@ -1,5 +1,24 @@
 return {
-  { "nvim-neo-tree/neo-tree.nvim", enabled = false },
+  {
+    's1n7ax/nvim-window-picker',
+    name = 'window-picker',
+    event = 'VeryLazy',
+    version = '2.*',
+    config = function()
+        require'window-picker'.setup()
+    end,
+  },
+  { "carlosrocha/chrome-remote.nvim" },
+  -- { "nvim-neo-tree/neo-tree.nvim",         enabled = false },
+  {
+    "echasnovski/mini.indentscope",
+    opts = {
+      draw = {
+        animation = require('mini.indentscope').gen_animation.none(),
+      }
+    }
+  },
+  { "lukas-reineke/indent-blankline.nvim", enabled = false },
   {
     "folke/flash.nvim",
     opts = {
@@ -12,6 +31,7 @@ return {
   },
   { "rcarriga/nvim-notify", opts = { stages = "static" } },
   { "tpope/vim-fugitive" },
+  { "tpope/vim-rhubarb" },
   -- {
   --   "ahmedkhalf/project.nvim",
   --   config = function() end,
@@ -34,8 +54,6 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     keys = {
-      -- add a keymap to browse plugin files
-      -- stylua: ignore
       {
         "<leader>,",
         "<cmd>Telescope buffers sort_mru=true<cr>",
@@ -49,30 +67,22 @@ return {
         desc = "Find Plugin File",
       },
     },
-    -- change some options
     opts = {
       defaults = {
+        prompt_prefix = " ",
+        selection_caret = " ",
+        -- selection_caret = " ",
         path_display = { "truncate" },
         winblend = 20,
       },
     },
   },
 
-  -- the opts function can also be used to change the default opts:
-  -- {
-  --   "nvim-lualine/lualine.nvim",
-  --   opts = {
-  --     options = {
-  --       section_separators = { left = "", right = "" },
-  --       component_separators = { left = "", right = "" },
-  --     },
-  --   },
-  -- },
   -- add more treesitter parsers
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
-      -- highlight = { enable = false },
+      highlight = { enable = false },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -82,15 +92,6 @@ return {
           node_decremental = "<S-TAB>",
         },
       },
-      -- incremental_selection = {
-      --   enable = true,
-      --   keymaps = {
-      --     init_selection = "<c-space>",
-      --     node_incremental = "<c-space>",
-      --     scope_incremental = "<c-s>",
-      --     node_decremental = "<M-space>",
-      --   },
-      -- },
       ensure_installed = {
         "vimdoc",
         "bash",
@@ -110,6 +111,15 @@ return {
       },
     },
   },
+  -- {
+  --   "nvim-lualine/lualine.nvim",
+  --   opts = {
+  --     options = {
+  --       section_separators = { left = "", right = "" },
+  --       component_separators = { left = "", right = "" },
+  --     },
+  --   },
+  -- },
   {
     "nvim-lualine/lualine.nvim",
     config = function()
@@ -147,10 +157,12 @@ return {
 
       local sections = {}
 
+      -- local gitsigns = vim.b.gitsigns_status_dict
+      local ilazy = require("lazyvim.config").icons
       local icons = {
         vim = "",
         git = "",
-        diff = { added = "󰐕", modified = "󰧞", removed = "󰍴" },
+        diff = { added = ilazy.git.added, modified = ilazy.git.modified, removed = ilazy.git.removed },
         default = { left = "", right = " " },
         round = { left = "", right = "" },
         block = { left = "█", right = "█" },
@@ -192,7 +204,7 @@ return {
         {
           "branch",
           icon = { icons.git, color = { fg = colors.magenta } },
-          cond = hide_in_width,
+          -- cond = hide_in_width,
         },
         {
           "diff",
@@ -203,11 +215,46 @@ return {
             modified = { fg = colors.orange },
             removed = { fg = colors.red },
           },
-          cond = hide_in_width,
+          source = function()
+            local gitsigns = vim.b.gitsigns_status_dict
+            if gitsigns then
+              return {
+                added = gitsigns.added,
+                modified = gitsigns.changed,
+                removed = gitsigns.removed,
+              }
+            end
+          end,
+          -- cond = hide_in_width,
         },
       })
 
-      ins_config("x", {})
+      local Util = require("lazyvim.util")
+      ins_config("x", {
+        -- stylua: ignore
+        {
+          function() return require("noice").api.status.command.get() end,
+          cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+          color = Util.ui.fg("Statement"),
+        },
+        -- stylua: ignore
+        {
+          function() return require("noice").api.status.mode.get() end,
+          cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+          color = Util.ui.fg("Constant"),
+        },
+        -- stylua: ignore
+        {
+          function() return "  " .. require("dap").status() end,
+          cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
+          color = Util.ui.fg("Debug"),
+        },
+        {
+          require("lazy.status").updates,
+          cond = require("lazy.status").has_updates,
+          color = Util.ui.fg("Special"),
+        },
+      })
 
       ins_config("y", {
         {
@@ -227,11 +274,11 @@ return {
             end
           end,
           separator = { left = icons.default.left },
-          cond = hide_in_width,
+          -- cond = hide_in_width,
         },
         {
           "location",
-          cond = hide_in_width,
+          -- cond = hide_in_width,
         },
       })
 
@@ -255,6 +302,11 @@ return {
             return msg
           end,
         },
+        {
+          function()
+            return " " .. os.date("%R")
+          end,
+        }
       })
 
       require("lualine").setup({

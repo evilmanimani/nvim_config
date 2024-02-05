@@ -10,6 +10,7 @@ return {
     opts = {
       theme = "neo",
       palette = "solarized",
+      -- palette = "selenized",
       transparent = false,
     },
   },

@@ -15,7 +15,25 @@ vk("n", "<A-S-p>", "<cmd>pu!<cr>", { desc = "Paste above" })
 vk("n", "<leader>?", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
 vk("n", "<leader>s?", "<cmd>Cheatsheet<cr>", { desc = "Cheatsheet" })
 vk("n", "<leader>um", "<cmd>messages<cr>", { desc = "Show messages" })
+-- vk("n", "<C-l>", "<cmd>LspStop<cr>")
+vk("v", "<F2>", "<cmd>'<,'>w !node<cr>", { desc = "Execute selection in Node" })
 vk("n", "<C-d>", "<C-d>zz")
 vk("n", "<C-u>", "<C-u>zz")
+vk("n", "<C-u>", "<C-u>zz")
 vk("x", "<leader>p", [["_dP]])
+-- vk("n", "<F5>",
+--   function()
+--     -- (Re-)reads launch.json if present
+--     local exists = vim.fn.filereadable(".vscode/launch.json")
+--     print("launch.json found: " .. tostring(exists))
+--     if exists then
+--       require("dap.ext.vscode").load_launchjs(nil, {
+--         ["pwa-chrome"] = { "javascript" },
+--         ["chrome"] = { "javascript" },
+--       })
+--     end
+--     require("dap").continue()
+--   end,
+--   { desc = "DAP Continue" }
+-- )
 -- vk("n", "-", "<cmd>Oil<CR>", { desc = "Open parent directory" })
