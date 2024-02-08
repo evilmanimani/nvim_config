@@ -5,7 +5,6 @@
 
 local vk = vim.keymap.set
 
-vim.g.neovide_scale_factor = 0.70
 local change_scale_factor = function(delta)
   vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
   vim.cmd("redraw!")

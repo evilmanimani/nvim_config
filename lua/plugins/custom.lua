@@ -1,4 +1,6 @@
 return {
+  { "rcarriga/nvim-notify", enabled = false },
+  { "folke/noice.nvim", enabled = false },
   {
     "stevearc/oil.nvim",
     config = function()
@@ -84,8 +86,9 @@ return {
     -- enabled = false,
     opts = {
       options = {
+        style_preset = require("bufferline").style_preset.minimal, -- or bufferline.style_preset.minimal,
         show_buffer_close_icons = false,
-        separator_style = "slant",
+        -- separator_style = "slant",
       },
     },
   },
