@@ -1,10 +1,6 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
--- disable netrw at the very start of your init.lua
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
--- optionally enable 24-bit colour
-vim.opt.termguicolors = true
-
-if not vim.g.vscode then
-  require("config.lazy")
-end
+vim.g.neovide_transparency = 0.95
+vim.g.neovide_fullscreen = true
+vim.g.neovide_cursor_vfx_mode = ""
+vim.g.neovide_cursor_trail_size = 0.4
+require("config.lazy")

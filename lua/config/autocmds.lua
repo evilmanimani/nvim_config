@@ -1,6 +1,39 @@
 -- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+  pattern = "*.ahk,*.ahk2,*.ah2",
+  callback = function(ev)
+    -- print(string.format("event fired: %s", vim.inspect(ev)))
+    local lsp = vim.lsp.get_clients()[1]
+    local content = vim.api.nvim_buf_get_lines(0, 0, 30, false)[1] or ""
+    vim.opt.ft = "autohotkey"
+    if
+      vim.regex([[ahk2$\|ah2$]]):match_str(ev.match) ~= nil
+      or vim.regex([[.*requires ahk v2.*\c]]):match_str(content) ~= nil
+    then
+      vim.b[0].ahk_version = 2
+    else
+      vim.b[0].ahk_version = 1
+      -- local obj = vim.lsp.get_active_clients({ bufnr = 0 })[1]
+      -- if obj ~= nil then
+      --   local client_id = obj.dynamic_capabilities.client_id
+      --   if obj.name == "ahk2" then
+      --     vim.lsp.stop_client(client_id)
+      --   end
+      -- end
+    end
+  end,
+})
+
+-- vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+-- vim.api.nvim_create_autocmd("FileType", {
+--   vim.lsp.start({
+--     name = 'autohotkey_v1',
+--     cmd = { "command" },
+--     root_dir = vim.fn.getcwd(), -- Use PWD as project root dir.
+--   })
+-- })
 -- Location information about the last message printed. The format is
 -- `(did print, buffer number, line number)`.
 --

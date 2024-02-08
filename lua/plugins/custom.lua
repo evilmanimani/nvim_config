@@ -1,24 +1,56 @@
 return {
+  { "stevearc/oil.nvim" },
   {
-    's1n7ax/nvim-window-picker',
-    name = 'window-picker',
-    event = 'VeryLazy',
-    version = '2.*',
-    config = function()
-        require'window-picker'.setup()
+    "nvim-neo-tree/neo-tree.nvim",
+    enabled = false,
+    opts = {
+      window = {
+        mappings = {
+          ["/"] = "noop",
+          ["#"] = "fuzzy_finder",
+        },
+      },
+    },
+  },
+  { "carlosrocha/chrome-remote.nvim", enabled = false },
+  { "lukas-reineke/indent-blankline.nvim", enabled = false },
+  -- override nvim-cmp and add cmp-emoji
+  { "DasGandlaf/nvim-autohotkey" },
+  {
+    "hrsh7th/nvim-cmp",
+    ---@param opts cmp.ConfigSchema
+    opts = function(_, opts)
+      -- print(vim.inspect(opts))
+      table.insert(opts.sources, { name = "autohotkey" })
     end,
   },
-  { "carlosrocha/chrome-remote.nvim" },
-  -- { "nvim-neo-tree/neo-tree.nvim",         enabled = false },
+  { "folke/which-key.nvim", opts = {
+    defaults = {
+      ["<leader>p"] = { name = "+paste" },
+    },
+  } },
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "s1n7ax/nvim-window-picker",
+    name = "window-picker",
+    event = "VeryLazy",
+    version = "2.*",
+    config = function()
+      require("window-picker").setup()
+    end,
+  },
   {
     "echasnovski/mini.indentscope",
-    opts = {
-      draw = {
-        animation = require('mini.indentscope').gen_animation.none(),
-      }
-    }
+    -- opts = {
+    --   draw = {
+    --     animation = require("mini.indentscope").gen_animation.none(),
+    --   },
+    -- },
   },
-  { "lukas-reineke/indent-blankline.nvim", enabled = false },
   {
     "folke/flash.nvim",
     opts = {
@@ -44,6 +76,7 @@ return {
   { "mbbill/undotree" },
   {
     "akinsho/bufferline.nvim",
+    -- enabled = false,
     opts = {
       options = {
         show_buffer_close_icons = false,
@@ -71,7 +104,6 @@ return {
       defaults = {
         prompt_prefix = " ",
         selection_caret = " ",
-        -- selection_caret = " ",
         path_display = { "truncate" },
         winblend = 20,
       },
@@ -82,7 +114,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
-      highlight = { enable = false },
+      -- highlight = { enable = false },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -111,18 +143,10 @@ return {
       },
     },
   },
-  -- {
-  --   "nvim-lualine/lualine.nvim",
-  --   opts = {
-  --     options = {
-  --       section_separators = { left = "", right = "" },
-  --       component_separators = { left = "", right = "" },
-  --     },
-  --   },
-  -- },
   {
     "nvim-lualine/lualine.nvim",
     config = function()
+      local separator_style = "round"
       local solarized_palette = require("solarized.palette")
       local colors = solarized_palette.get_colors()
 
@@ -145,7 +169,7 @@ return {
           a = { fg = colors.base03, bg = colors.red },
         },
         inactive = {
-          a = { fg = colors.base02, bg = colors.base04 },
+          a = { fg = colors.base02, bg = colors.base1 },
           b = { fg = colors.base2, bg = colors.base04 },
           c = { fg = colors.base04, bg = colors.base04 },
         },
@@ -177,7 +201,7 @@ return {
         {
           "mode",
           icon = icons.vim,
-          separator = { left = icons.block.left, right = icons.default.right },
+          separator = { left = icons.block.left, right = icons[separator_style].right },
           right_padding = 2,
         },
       })
@@ -273,7 +297,7 @@ return {
               return "  " .. spinners[index]
             end
           end,
-          separator = { left = icons.default.left },
+          separator = { left = icons[separator_style].left },
           -- cond = hide_in_width,
         },
         {
@@ -306,21 +330,18 @@ return {
           function()
             return " " .. os.date("%R")
           end,
-        }
+        },
       })
 
       require("lualine").setup({
         options = {
           theme = custom_theme,
           component_separators = "",
-          section_separators = { left = icons.default.right, right = icons.default.left },
-          disabled_filetypes = {
-            "NvimTree",
-            "starter",
-          },
-          refresh = {
-            statusline = 1000,
-          },
+          section_separators = { left = icons[separator_style].right, right = icons[separator_style].left },
+          disabled_filetypes = { statusline = { "dashboard", "alpha", "starter", "NvimTree", "lazy", "neo-tree" } },
+          -- refresh = {
+          --   statusline = 1000,
+          -- },
         },
         sections = sections,
         inactive_sections = {
@@ -331,7 +352,22 @@ return {
           lualine_y = {},
           lualine_z = { "location" },
         },
-        tabline = {},
+        -- winbar = {
+        --   lualine_a = { "buffers" },
+        --   lualine_b = {},
+        --   lualine_c = {},
+        --   lualine_x = {},
+        --   lualine_y = {},
+        --   lualine_z = { "tabs" },
+        -- },
+        -- inactive_winbar = {
+        --   lualine_a = { "buffers" },
+        --   lualine_b = {},
+        --   lualine_c = {},
+        --   lualine_x = {},
+        --   lualine_y = {},
+        --   lualine_z = { "tabs" },
+        -- },
         extensions = {},
       })
     end,
