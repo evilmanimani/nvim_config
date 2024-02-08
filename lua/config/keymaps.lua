@@ -4,16 +4,17 @@
 -- Set keymaps to control the debugger
 
 local vk = vim.keymap.set
-vim.g.neovide_scale_factor = 1.0
+
+vim.g.neovide_scale_factor = 0.70
 local change_scale_factor = function(delta)
   vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
   vim.cmd("redraw!")
 end
 vk("n", "<C-=>", function()
-  change_scale_factor(1.10)
+  change_scale_factor(1.11)
 end)
 vk("n", "<C-->", function()
-  change_scale_factor(1 / 1.10)
+  change_scale_factor(1 / 1.11)
 end)
 if vim.g.neovide then
   vk("n", "<C-s>", ":w<CR>") -- Save
@@ -22,13 +23,18 @@ if vim.g.neovide then
   vk("v", "<C-v>", '"+P') -- Paste visual mode
   vk("c", "<C-v>", "<C-R>+") -- Paste command mode
   vk("i", "<C-v>", '<ESC>l"+Pli') -- Paste insert mode
+  vk("n", "<F11>", function()
+    vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
+  end, { desc = "Toggle fullscreen" })
 end
+
+vk("n", "-", require("oil").open, { desc = "Open parent directory" })
 
 -- Allow clipboard copy paste in neovim
 vim.api.nvim_set_keymap("", "<C-v>", "+p<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("!", "<C-v>", "<C-R>+", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("t", "<C-v>", "<C-R>+", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<C-v>", "<C-R>+", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("t", "<D-v>", "<C-R>+", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 
 vk("v", "J", ":m '>+1<cr>gv=gv", { desc = "Move selected down" })
 vk("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move selected up" })
@@ -69,4 +75,36 @@ vk("x", "<leader>p", [["_dP]])
 --   end,
 --   { desc = "DAP Continue" }
 -- )
--- vk("n", "-", "<cmd>Oil<CR>", { desc = "Open parent directory" })
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup({})
+-- REQUIRED
+
+vim.keymap.set("n", "<leader>a", function()
+  harpoon:list():append()
+end, { desc = "Harpoon - append" })
+vim.keymap.set("n", "<C-e>", function()
+  harpoon.ui:toggle_quick_menu(harpoon:list())
+end)
+
+vim.keymap.set("n", "<C-h>", function()
+  harpoon:list():select(1)
+end)
+vim.keymap.set("n", "<C-t>", function()
+  harpoon:list():select(2)
+end)
+vim.keymap.set("n", "<C-n>", function()
+  harpoon:list():select(3)
+end)
+vim.keymap.set("n", "<C-s>", function()
+  harpoon:list():select(4)
+end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+vim.keymap.set("n", "<C-S-P>", function()
+  harpoon:list():prev()
+end)
+vim.keymap.set("n", "<C-S-N>", function()
+  harpoon:list():next()
+end)
