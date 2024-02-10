@@ -16,12 +16,12 @@ vk("n", "<C-->", function()
   change_scale_factor(1 / 1.11)
 end)
 if vim.g.neovide then
-  vk("n", "<C-s>", ":w<CR>") -- Save
-  vk("v", "<C-c>", '"+y') -- Copy
-  vk("n", "<C-v>", '"+P') -- Paste normal mode
-  vk("v", "<C-v>", '"+P') -- Paste visual mode
-  vk("c", "<C-v>", "<C-R>+") -- Paste command mode
-  vk("i", "<C-v>", '<ESC>l"+Pli') -- Paste insert mode
+  -- vk("n", "<C-s>", ":w<CR>") -- Save
+  -- vk("v", "<C-c>", '"+y') -- Copy
+  -- vk("n", "<C-v>", '"+P') -- Paste normal mode
+  -- vk("v", "<C-v>", '"+P') -- Paste visual mode
+  -- vk("c", "<C-v>", "<C-R>+") -- Paste command mode
+  -- vk("i", "<C-v>", '<ESC>l"+Pli') -- Paste insert mode
   vk("n", "<F11>", function()
     vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
   end, { desc = "Toggle fullscreen" })
@@ -35,8 +35,8 @@ vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true 
 vim.api.nvim_set_keymap("t", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 
-vk("v", "J", ":m '>+1<cr>gv=gv", { desc = "Move selected down" })
-vk("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move selected up" })
+-- vk("v", "J", ":m '>+1<cr>gv=gv", { desc = "Move selected down" })
+-- vk("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move selected up" })
 vk("n", "<C-p>", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
 -- vk("n", "<C-A-o>", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", { desc = "Find symbols" })
 vk("i", "jj", "<esc>", { desc = "<ESC>" })

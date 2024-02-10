@@ -51,12 +51,31 @@ return {
     end,
   },
   {
-    "echasnovski/mini.indentscope",
-    -- opts = {
-    --   draw = {
-    --     animation = require("mini.indentscope").gen_animation.none(),
-    --   },
-    -- },
+    "echasnovski/mini.nvim",
+    version = false,
+    init = function()
+      require("mini.ai").setup({})
+      require("mini.notify").setup({})
+      require("mini.splitjoin").setup({})
+      require("mini.align").setup({})
+      require("mini.bracketed").setup({})
+
+      require("mini.move").setup({
+        mappings = {
+          -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
+          right = "<M-l>",
+          left = "<M-h>",
+          down = "<M-j>",
+          up = "<M-k>",
+
+          -- Move current line in Normal mode
+          line_left = "<M-h>",
+          line_right = "<M-l>",
+          line_down = "<M-j>",
+          line_up = "<M-k>",
+        },
+      })
+    end,
   },
   {
     "folke/flash.nvim",
@@ -88,6 +107,7 @@ return {
       options = {
         style_preset = require("bufferline").style_preset.minimal, -- or bufferline.style_preset.minimal,
         show_buffer_close_icons = false,
+        show_close_icon = false,
         -- separator_style = "slant",
       },
     },
